@@ -5,15 +5,15 @@ from .constants import FLOAT_SIZE, METADATA_SIZE
 
 
 class SVD:
-    def __init__(self, u: np.ndarray, s: np.ndarray, vh: np.ndarray):
+    def __init__(self, u: np.ndarray, s: np.ndarray, vt: np.ndarray):
         self.u = u
         self.s = s
-        self.vh = vh
+        self.vt = vt
 
     def to_bytes(self) -> bytes:
         return self.u.astype(np.float32).tobytes() + \
             self.s.astype(np.float32).tobytes() + \
-            self.vh.astype(np.float32).tobytes()
+            self.vt.astype(np.float32).tobytes()
 
     @staticmethod
     def from_bytes(data: bytes, height: int, width: int, k: int):
@@ -28,7 +28,7 @@ class SVD:
         return SVD(u, s, vh)
 
     def to_matrix(self) -> np.array:
-        return self.u @ np.diag(self.s) @ self.vh
+        return self.u @ np.diag(self.s) @ self.vt
 
 
 class ImgCompressed:
